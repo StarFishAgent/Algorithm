@@ -1,0 +1,25 @@
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        left = 0 #初始化左指针
+        right = 0 #初始化右指针
+        result = [] #初始化结果返回值
+        #当左指针小于集合长度时
+        while left < len(nums):
+            #当右指针 + 1 小于集合长度时 和 集合的索引右指针+1 - 集合的索引右指针 =1 时
+            #简单来说就是大减小 = 1 时 说明正在区间中 例：8-7 = 1
+            while right + 1 < len(nums) and nums[right + 1] - nums[right] == 1:
+                right += 1
+            
+            #如果左指针 = 右指针时，说明区间范围是自己
+            if left == right:
+                result.append(str(nums[left]))
+            else:#若左指针和右指针不相等那么输出一个区间相当于nums[0] = 0  nums[2] = 2  0->2
+                result.append(str(nums[left]) + '->' + str(nums[right]))
+            #由于已经遍历了前三个元素，所以我们下次循环要+1 从第四个元素开始继续遍历
+            left = right + 1
+            right = left
+            #所以右指针也从3开始，那么下一次循环左指针就是3，右指针进入下次循环时，再进入子循环必定是+1
+            #所以是5 - 4 = 1 right 从 3 + 1 = 4 基本上就出循环了
+            #然后再往下就是 nums[3] -> nums[4] = 4 -> 5 
+            #下一次循环就是7 自己等于自己
+        return result
